@@ -1,0 +1,7 @@
+{
+	"name":"akiyatkin/cdek",
+	"require":{
+		"infrajs/catalog":"~1",
+		"akiyatkin/load":"~1"
+	}
+}
