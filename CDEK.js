@@ -8,12 +8,20 @@ export let CDEK = {
 	set: (name, arg, val) => Fire.set(CDEK, name, arg, val),
 	
 	
-	calc: async (wat) => {
+	change: async (wat) => {
 		if (!wat) return
 		delete wat.PVZ.Picture
 		delete wat.PVZ.placeMark
 		delete wat.PVZ.list_block
-		CDEK.on('calc', wat)
+		CDEK.on('change', wat)
+	},
+	open: async () => {
+		let cartWidjet = await CDEK.getCartWidjet()
+		cartWidjet.open()
+	},
+	close: async () => {
+		let cartWidjet = await CDEK.getCartWidjet()
+		cartWidjet.close()
 	},
 	getCartWidjet: async () => {
 		if (!window.cartWidjet) {
@@ -34,8 +42,8 @@ export let CDEK = {
 					await CDN.load('jquery')
 					$('.CDEK-widget__popup__close-btn').attr('data-crumb','false').attr('onclick','return false');
 				},
-				onCalculate2: CDEK.calc,
-				onChoose: CDEK.calc,
+				onCalculate2: CDEK.change,
+				onChoose: CDEK.change,
 				goods: [
 				   { length: 20, width: 20, height: 20, weight: 2 }
 				]
