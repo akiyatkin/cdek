@@ -1,7 +1,28 @@
 (async () => {
-	
+	let cls = cls => document.getElementsByClassName(cls)
+	let ws = new WeakSet()
+	let CDEK = (await import('/vendor/akiyatkin/cdek/CDEK.js')).default
+	let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
+	Event.handler('Controller.onshow', async () => {
+		let btns = cls('-cdek-city')
+		await CDN.load('jquery')
+		let city = Session.get('orders.my.transport.city', Config.get('cdek').defaultCity)
+		for (let btn of btns) {
+			if (ws.has(btn)) continue 
+			ws.add(btn)
+			btn.innerHTML = city
+			btn.addEventListener('click', e => CDEK.open())
+		}
+	})
+	CDEK.handler('change', wat => {
+		console.log(wat)
+		if (!wat.cityName) return
+		Session.set('orders.my.transport.city',wat.cityName)
+		let btns = cls('-cdek-city')
+		for (let btn of btns) btn.innerHTML = wat.cityName
+	})
 	/*Event.handler('Controller.onshow', async () => {
-		let CDEK = (await import('/vendor/akiyatkin/cdek/CDEK.js')).default
+		
 		let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
 	
 		$('-cdek-city').attr('data-cdek','true').click( function() {

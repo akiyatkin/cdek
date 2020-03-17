@@ -1,5 +1,11 @@
 {
-	"pub":["apikey"],
+	"pub":["apikey","cityFrom","defaultCity"],
 	"apikey":"Ключ Яндекс от Геокодер",
-	"js":"infra.js"
+	"cityFrom":"Москва",
+	"defaultCity":"Москва",
+	"js":"infra.js",
+	"css":"style.css",
+	"clutch":{
+		"cart":["vendor/akiyatkin/cdek/"]
+	}
 }

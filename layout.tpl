@@ -1,8 +1,6 @@
 {transport:}
 	<style>
-		.CDEK-widget__popup-mask {
-			z-index: 30;
-		}
+		
 		#{div} .showres a {
 			margin:0 5px;
 		}
@@ -15,7 +13,7 @@
 	</style>
 	<div class="alert alert-success">
 		<h2>Доставка</h2>
-		Ваш город: <b class="-city-str"></b>
+		Ваш город: <b class="-cdek-city"></b>
 		<div>
 			<span class="a showTransport">Выбрать пункт выдачи</span>
 		</div>
@@ -32,10 +30,7 @@
 			let cls = cls => div.getElementsByClassName(cls)[0]
 			let btn = cls('showTransport')
 			let showres = cls('showres')
-			let choice = cls('-city-str')
-			choice.addEventListener('click', async () => {
-				City.show()
-			})
+			
 			btn.addEventListener('click', () => CDEK.open())
 
 			let show = async (showres, wat) => {

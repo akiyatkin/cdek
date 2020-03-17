@@ -1,5 +1,4 @@
 import Fire from '../load/Fire.js'
-import Load from '../load/Load.js'
 
 
 export let CDEK = {
@@ -10,14 +9,24 @@ export let CDEK = {
 	
 	change: async (wat) => {
 		if (!wat) return
-		delete wat.PVZ.Picture
-		delete wat.PVZ.placeMark
-		delete wat.PVZ.list_block
+		if (wat.PVZ) {
+			delete wat.PVZ.Picture
+			delete wat.PVZ.placeMark
+			delete wat.PVZ.list_block
+		}
 		CDEK.on('change', wat)
 	},
 	open: async () => {
+		import('/vendor/akiyatkin/hatloader/HatLoader.js').then( (obj) => {
+			let HatLoader = obj.default;
+			HatLoader.show('Загружается карта...')
+		})
 		let cartWidjet = await CDEK.getCartWidjet()
 		cartWidjet.open()
+		import('/vendor/akiyatkin/hatloader/HatLoader.js').then( (obj) => {
+			let HatLoader = obj.default;
+			HatLoader.hide()
+		})
 	},
 	close: async () => {
 		let cartWidjet = await CDEK.getCartWidjet()
@@ -25,15 +34,16 @@ export let CDEK = {
 	},
 	getCartWidjet: async () => {
 		if (!window.cartWidjet) {
-			let CDN = await Load.on('import-default', '/vendor/akiyatkin/load/CDN.js')
+			let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
 			await CDN.load('cdek.widget')
 			let option = {
-				defaultCity: 'Тольятти', //какой город отображается по умолчанию
-				cityFrom: 'Москва', // из какого города будет идти доставка
+				//defaultCity: 'Тольятти', //какой город отображается по умолчанию
+				cityFrom: Config.get('cdek'), // из какого города будет идти доставка
 				hidedress: true,
 				hidecash: true,
 				hidedelt: false,
 				servicepath: '/-cdek/service.php',
+				popup: true,
 				path: 'https://widget.cdek.ru/widget/scripts/',
 				//path2: '/-catalog/cdek/widget/scripts/',
 				apikey: Config.get('cdek').apikey,
@@ -42,49 +52,42 @@ export let CDEK = {
 					await CDN.load('jquery')
 					$('.CDEK-widget__popup__close-btn').attr('data-crumb','false').attr('onclick','return false');
 				},
-				onCalculate2: CDEK.change,
+				onChooseProfile: CDEK.change,
+				onCalculate: CDEK.change,
 				onChoose: CDEK.change,
-				goods: [
-				   { length: 20, width: 20, height: 20, weight: 2 }
-				]
+				goods: await CDEK.getGoods()
 			}
-			window.cartWidjet = new ISDEKWidjet ({
-				...option,
-				popup: true
-			});
+			window.cartWidjet = new ISDEKWidjet(option);
 		}
-		
 		if (cartWidjet.loadedToAction) {
 			return cartWidjet
 		} else {
 			return new Promise(resolve => {
 				let timer = setInterval(() => {
-					if (!cartWidjet.loadedToAction)
+					if (!cartWidjet.loadedToAction) return
 					clearInterval(timer)
 					resolve(cartWidjet)
 				}, 300)	
 			})
 		}
+	},
+	getGoods: async () => {
+		let gorder = window.Cart.getGoodOrder()
+		let count = 0
+		for (let i in gorder.basket) {
+			let item = gorder.basket[i]
+			count += item.count
+		}
+		let goods = []
+		for (let i = 0; i < count; i++) {
+			goods.push({ 
+				length: 20, 
+				width: 10, 
+				height: 10, 
+				weight: 1 
+			})
+		}
 	}
 }
-window.Event.handler('Session.onsync', async () => { 
-	let gorder = window.Cart.getGoodOrder()
-	let count = 0
-	for (let i in gorder.basket) {
-		let item = gorder.basket[i]
-		count += item.count
-	}
-	let cartWidjet = await CDEK.getCartWidjet()
-	cartWidjet.cargo.reset()
-	for (let i = 0; i < count; i++) {
-		cartWidjet.cargo.add({ 
-			length: 20, 
-			width: 10, 
-			height: 10, 
-			weight: 1 
-		})
-	}
-	console.log('sync',cartWidjet.cargo.get())
-});
 
 export default CDEK
