@@ -11,6 +11,7 @@
 			if (ws.has(btn)) continue 
 			ws.add(btn)
 			if (!btn.classList.contains('fix')) btn.innerHTML = city
+			if (btn.classList.contains('disabled')) continue
 			btn.addEventListener('click', e => CDEK.open())
 		}
 	})
@@ -19,7 +20,10 @@
 		if (!wat.cityName) return
 		Session.set('orders.my.cdek.wat', wat)
 		let btns = cls('-cdek-city')
-		for (let btn of btns) btn.innerHTML = wat.cityName
+		for (let btn of btns) {
+			if (!btn.classList.contains('fix')) btn.innerHTML = wat.cityName
+			btn.innerHTML = wat.cityName
+		}
 		Session.syncNow()
 		Global.check('cart')
 	})

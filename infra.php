@@ -16,5 +16,6 @@ Event::handler('Order.calc', function (&$gorder) {
 	$gorder['cdek']['type'] = Seq::get($gorder, 'cdek.wat.PVZ')? "pickup": "courier";
 	$gorder['cdek']['calc'] = CDEK::calc($gorder);
 	$gorder['cdek'][$gorder['cdek']['type']] = true;
+	$gorder['alltotal'] = $gorder['total'] + $gorder['cdek']['calc']['result']['price'];
 });
 

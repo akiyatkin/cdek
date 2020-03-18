@@ -25,16 +25,13 @@ class CDEK {
 		
 		$src = '-cdek/service.php?'.http_build_query($get);
 		$json = Load::loadJSON($src);
-		/*
-			price: "780"
-			deliveryPeriodMin: 2
-			deliveryPeriodMax: 3
-		*/
+		$json['get'] = $get;
 		return $json;
 	}
 	public static function getGoods($gorder) 
 	{	
 		$count = 0;
+		if(empty($gorder['basket'])) return [];
 		foreach ($gorder['basket'] as $item) {
 			$count += $item['count'];
 		}

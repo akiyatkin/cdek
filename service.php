@@ -1,5 +1,7 @@
 <?php
 use akiyatkin\boo\Cache;
+use infrajs\ans\Ans;
+
 header('Access-Control-Allow-Origin: *');
 error_reporting(0);
 ISDEKservice::setTarifPriority(
@@ -9,7 +11,7 @@ ISDEKservice::setTarifPriority(
 
 $action = $_REQUEST['isdek_action'];
 if (method_exists('ISDEKservice', $action)) {
-	ISDEKservice::$action($_REQUEST);
+	return ISDEKservice::$action($_REQUEST);
 }
 
 class ISDEKservice
@@ -36,13 +38,13 @@ class ISDEKservice
 		if ($arPVZ) {
 			self::toAnswer(array('pvz' => $arPVZ));
 		}
-		self::printAnswer();
+		return self::printAnswer();
 	}
 
 	public static function getLang()
 	{
 		self::toAnswer(array('LANG' => self::getLangArray()));
-		self::printAnswer();
+		return self::printAnswer();
 	}
 
 	public static function calc($data)
@@ -76,7 +78,7 @@ class ISDEKservice
 			self::toAnswer(array('error' => 'City to not found'));
 		}
 
-		self::printAnswer();
+		return self::printAnswer();
 	}
 
 	public static function getCity($data)
@@ -102,7 +104,7 @@ class ISDEKservice
 			self::toAnswer(array('error' => 'No city to search given'));
 		}
 
-		self::printAnswer();
+		return self::printAnswer();
 	}
 
 	// PVZ
@@ -426,6 +428,7 @@ class ISDEKservice
 
 	protected static function printAnswer()
 	{
-		echo json_encode(self::$answer);
+		
+		return Ans::ans(self::$answer);
 	}
 }
