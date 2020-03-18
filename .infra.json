@@ -1,8 +1,11 @@
 {
-	"pub":["apikey","cityFrom","defaultCity"],
+	"pub":["apikey","cityFrom","defaultCity","cityFromId","defaultCityId"],
+	"conf":"akiyatkin\\cdek\\CDEK",
 	"apikey":"Ключ Яндекс от Геокодер",
 	"cityFrom":"Москва",
+	"cityFromId":44,
 	"defaultCity":"Москва",
+	"defaultCityId":44,
 	"js":"infra.js",
 	"css":"style.css",
 	"clutch":{

@@ -4,5 +4,10 @@
 		"infrajs/catalog":"~1",
 		"akiyatkin/load":"~1",
 		"akiyatkin/hatloader":"~1"
+	},
+	"autoload": {
+		"psr-4":{
+	 		"akiyatkin\\cdek\\": ""
+		}
 	}
 }

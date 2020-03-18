@@ -1,4 +1,5 @@
 <?php
+use akiyatkin\boo\Cache;
 header('Access-Control-Allow-Origin: *');
 error_reporting(0);
 ISDEKservice::setTarifPriority(
@@ -107,9 +108,10 @@ class ISDEKservice
 	// PVZ
 	protected static function getPVZFile()
 	{
-
-		$arPVZ = self::requestPVZ();
-
+		$args = array_intersect_key($_REQUEST, array_flip(['lang','country']));
+		$arPVZ = Cache::func(function () {
+			return self::requestPVZ();	
+		}, $args);
 		return $arPVZ;
 	}
 

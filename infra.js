@@ -6,20 +6,22 @@
 	Event.handler('Controller.onshow', async () => {
 		let btns = cls('-cdek-city')
 		await CDN.load('jquery')
-		let city = Session.get('orders.my.transport.city', Config.get('cdek').defaultCity)
+		let city = Session.get('orders.my.cdek.cityName', Config.get('cdek').defaultCity)
 		for (let btn of btns) {
 			if (ws.has(btn)) continue 
 			ws.add(btn)
-			btn.innerHTML = city
+			if (!btn.classList.contains('fix')) btn.innerHTML = city
 			btn.addEventListener('click', e => CDEK.open())
 		}
 	})
 	CDEK.handler('change', wat => {
 		console.log(wat)
 		if (!wat.cityName) return
-		Session.set('orders.my.transport.city',wat.cityName)
+		Session.set('orders.my.cdek',wat)
 		let btns = cls('-cdek-city')
 		for (let btn of btns) btn.innerHTML = wat.cityName
+		Session.syncNow()
+		Global.check('cart')
 	})
 	/*Event.handler('Controller.onshow', async () => {
 		
