@@ -21,9 +21,8 @@
 	</div>
 	<script async type="module">
 		(async () => {
-			let Load = (await import('/vendor/akiyatkin/load/Load.js')).default
-			let CDEK = await Load.on('import-default', '/vendor/akiyatkin/cdek/CDEK.js')
-			let CDN = await Load.on('import-default', '/vendor/akiyatkin/load/CDN.js')
+			let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
+			let CDEK = (await import('/vendor/akiyatkin/cdek/CDEK.js')).default
 			await CDN.load('jquery')
 
 			let div = document.getElementById('{div}')
@@ -44,7 +43,7 @@
 				})
 			}		
 			
-			CDEK.handler('change', (wat) => {
+			CDEK.hand('change', (wat) => {
 				show(showres, wat)
 				Session.set('orders.my.transport.city', wat.cityName)
 				Session.set('cdek', wat)

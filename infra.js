@@ -6,7 +6,7 @@
 	Event.handler('Controller.onshow', async () => {
 		let btns = cls('-cdek-city')
 		await CDN.load('jquery')
-		let city = Session.get('orders.my.cdek.cityName', Config.get('cdek').defaultCity)
+		let city = Session.get('orders.my.cdek.wat.cityName', Config.get('cdek').defaultCity)
 		for (let btn of btns) {
 			if (ws.has(btn)) continue 
 			ws.add(btn)
@@ -14,10 +14,10 @@
 			btn.addEventListener('click', e => CDEK.open())
 		}
 	})
-	CDEK.handler('change', wat => {
+	CDEK.hand('change', wat => {
 		console.log(wat)
 		if (!wat.cityName) return
-		Session.set('orders.my.cdek',wat)
+		Session.set('orders.my.cdek.wat', wat)
 		let btns = cls('-cdek-city')
 		for (let btn of btns) btn.innerHTML = wat.cityName
 		Session.syncNow()

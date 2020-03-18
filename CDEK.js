@@ -1,10 +1,12 @@
 import Fire from '../load/Fire.js'
 
-
 export let CDEK = {
 	on: (name, arg) => Fire.on(CDEK, name, arg),
-	handler: (name, func) => Fire.handler(CDEK, name, func),
+	hand: (name, func) => Fire.hand(CDEK, name, func),
 	set: (name, arg, val) => Fire.set(CDEK, name, arg, val),
+
+	
+
 	calc: async (type = "courier") => {
 		//type: courier, pickup
 		let get = {
@@ -12,14 +14,13 @@ export let CDEK = {
 			timestamp:Date.now(),
 			shipment: {
 				cityFromId: Config.get('cdek').cityFromId, //Москва
-				cityToId: Session.get('orders.my.cdek.city', Config.get('cdek').defaultCityId),
+				cityToId: Session.get('orders.my.cdek.wat.city', Config.get('cdek').defaultCityId),
 				"type":type,
 				"goods":await CDEK.getGoods()
 			}
 		}
-		let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
-		await CDN.load('jquery')
-		let json = await fetch('/-cdek/service.php?' + $.param(get)).then(res => res.json())
+		let Load = (await import('/vendor/akiyatkin/load/Load.js')).default
+		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(res => res.json())
 		/*
 			price: "780"
 			deliveryPeriodMin: 2

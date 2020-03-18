@@ -7,6 +7,7 @@
 	"defaultCity":"Москва",
 	"defaultCityId":44,
 	"js":"infra.js",
+	"require":"infra.php",
 	"css":"style.css",
 	"clutch":{
 		"cart":["vendor/akiyatkin/cdek/"]

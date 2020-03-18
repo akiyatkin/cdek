@@ -1,6 +1,7 @@
 <?php
-use akiatkin\cdek\CDEK;
+use akiyatkin\cdek\CDEK;
+use infrajs\cart\Cart;
 
-$res = CDEK::calc();
+$order = Cart::getGoodOrder();
 echo '<pre>';
-print_r($res); 
+print_r($order['cdek']); 

@@ -1,0 +1,3 @@
+{
+	"dependencies":["path","event","catalog","session","showcase","cdek"]
+}
