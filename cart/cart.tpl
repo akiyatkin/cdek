@@ -2,16 +2,17 @@
 {transcardsimple:}
 	{order.cdek:cdekinfo}
 {citychoice:}
-	<p>Город: <b class="{(:isdisabled)??:a} {:isdisabled} -cdek-city">{cityName}</b></p>
+	Город: <b>{cityTo}</b>
 {cityfix:}
-	<p>Город: <b>{cityName}</b></p>
+	<p>Город: <b>{cityTo}</b></p>
 {cdekinfo:}
 	{data.order.id?:cityfix?:citychoice}
-	
 	{pickup?wat.PVZ:pvz}
 	{courier?:cur}
-	{cur:}
-		<p>Стоимость доставки курьером: <b>{~cost(calc.result.price)}{:model.unit}</b></p>
+	{data.order.id??:cdekchange}
+	{courier?:printaddr}
+	{cdekchange:}<p><b class="-cdek-city a fix">Изменить</b></p>
+	{printaddr:}
 		<div class="row">
 			<div class="col-12">
 				<div class="form-group">
@@ -20,16 +21,20 @@
 				</div>
 			</div>
 		</div>
+	{cur:}
+		<div>Стоимость доставки курьером: <b>{~cost(calc.result.price)}{:model.unit}</b></div>
 	{pvz:}
-		<p>Выбран пункт самовывоза <b>{Name}</b> (<b>{..id}</b>)</p>
+		<div>Выбран пункт самовывоза <b>{Name}</b> (<b>{..id}</b>)</div>
 		<table class="table table-sm">
 			<tr><td>Адрес</td><td>{Address}</td></tr>
 			<tr><td>Время работы</td><td>{WorkTime}</td></tr>
 			<tr><td>Комментарий</td><td>{Note}</td></tr>
 		</table>
-		<p>Стоимость доставки самовывозом: <b>{~cost(...calc.result.price)}{:model.unit}</b></p>
+		<div>Стоимость доставки самовывозом: <b>{~cost(...calc.result.price)}{:model.unit}</b></div>
 {iprinttr:}
-	<b>Доставка</b>: {..cdek.cityTo}, {..cdek.pickup?:Cамовывоз?:Курьер}, {..cdek.wat.PVZ?..cdek.wat.id?address} (<b>{..cdek.calc.result.price}{:model.unit}</b>)
+	<b>Доставка</b>: {..cdek.cityTo}, {..cdek.pickup?:strpickup?:strcourier}, {..cdek.wat.PVZ?..cdek.wat.id?address} (<b>{..cdek.calc.result.price}{:model.unit}</b>)
+	{strcourier:}Курьер
+	{strpickup:}Самовывоз
 {amount:}
 	Стоимость{sum!total?:nodiscount}: <b>{~cost(sum)}&nbsp;руб.</b><br>
 	{sum!total?:prcoupon}
