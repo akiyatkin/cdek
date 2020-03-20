@@ -27,7 +27,7 @@
 		<div>Выбран пункт самовывоза <b>{Name}</b> (<b>{..id}</b>)</div>
 		<table class="table table-sm">
 			<tr><td>Адрес</td><td>{Address}</td></tr>
-			<tr><td>Время работы</td><td>{WorkTime}</td></tr>
+			<tr><td>Время&nbsp;работы</td><td>{WorkTime}</td></tr>
 			<tr><td>Комментарий</td><td>{Note}</td></tr>
 		</table>
 		<div>Стоимость доставки самовывозом: <b>{~cost(...calc.result.price)}{:model.unit}</b></div>
