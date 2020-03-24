@@ -3,7 +3,7 @@ use akiyatkin\boo\Cache;
 use infrajs\ans\Ans;
 
 header('Access-Control-Allow-Origin: *');
-error_reporting(0);
+//error_reporting(0);
 ISDEKservice::setTarifPriority(
 	array(233, 137, 139, 16, 18, 11, 1, 3, 61, 60, 59, 58, 57, 83),
     array(234, 136, 138, 15, 17, 10, 12, 5, 62, 63)
@@ -49,7 +49,7 @@ class ISDEKservice
 
 	public static function calc($data)
 	{
-		if (!$data['shipment']['tarifList']) {
+		if (empty($data['shipment']['tarifList'])) {
 			$data['shipment']['tariffList'] = self::$tarifPriority[$data['shipment']['type']];
 		}
         if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) $data['shipment']['ref'] = $_SERVER['HTTP_REFERER'];
@@ -213,16 +213,16 @@ class ISDEKservice
 		$arData = array(
 			'dateExecute'    => $headers['date'],
 			'version'        => '1.0',
-			'authLogin'      => $headers['account'],
-			'secure'         => $headers['secure'],
-			'senderCityId'   => $shipment['cityFromId'],
-			'receiverCityId' => $shipment['cityToId'],
-			'ref'            => $shipment['ref'],
+			'authLogin'      => isset($headers['account']) ? $headers['account']: null,
+			'secure'         => isset($headers['secure']) ? $headers['secure']: null,
+			'senderCityId'   => isset($shipment['cityFromId']) ? $shipment['cityFromId']: null,
+			'receiverCityId' => isset($shipment['cityToId']) ? $shipment['cityToId']: null,
+			'ref'            => isset($shipment['ref']) ? $shipment['ref']: null,
 			'widget'         => 1,
-			'tariffId'       => ($shipment['tariffId']) ? $shipment['tariffId'] : false
+			'tariffId'       => isset($shipment['tariffId']) ? $shipment['tariffId'] : false
 		);
 
-		if ($shipment['tariffList']) {
+		if (!empty($shipment['tariffList'])) {
 			foreach ($shipment['tariffList'] as $priority => $tarif) {
 				$tarif = intval($tarif);
 				$arData['tariffList'] [] = array(
@@ -232,7 +232,7 @@ class ISDEKservice
 			}
 		}
 
-		if ($shipment['goods']) {
+		if (!empty($shipment['goods'])) {
 			$arData['goods'] = array();
 			foreach ($shipment['goods'] as $arGood) {
 				$arData['goods'] [] = array(
