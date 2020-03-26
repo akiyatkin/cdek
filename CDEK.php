@@ -38,10 +38,10 @@ class CDEK {
 		$goods = [];
 		for ($i = 0; $i < $count; $i++) {
 			array_push($goods, [ 
-				"length" => 20, 
-				"width" => 10, 
-				"height" => 10, 
-				"weight" => 1 
+				"length" => 12, 
+				"width" => 6, 
+				"height" => 15, 
+				"weight" => 0.4 
 			]);
 		}
 		return $goods;

@@ -20,12 +20,14 @@ export let CDEK = {
 			}
 		}
 		let Load = (await import('/vendor/akiyatkin/load/Load.js')).default
-		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(res => res.json())
+		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(async res => await res.json())
+		console.log(get)
 		/*
 			price: "780"
 			deliveryPeriodMin: 2
 			deliveryPeriodMax: 3
 		*/
+
 		return json
 	},
 	change: async (wat) => {
@@ -103,10 +105,10 @@ export let CDEK = {
 		let goods = []
 		for (let i = 0; i < count; i++) {
 			goods.push({ 
-				length: 20, 
-				width: 10, 
-				height: 10, 
-				weight: 1 
+				length: 12, 
+				width: 6, 
+				height: 15, 
+				weight: 0.4 
 			})
 		}
 		console.log(goods)

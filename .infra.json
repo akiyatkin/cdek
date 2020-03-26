@@ -6,6 +6,8 @@
 	"cityFromId":44,
 	"defaultCity":"Москва",
 	"defaultCityId":44,
+	"account":"",
+	"key":"",
 	"js":"infra.js",
 	"require":"infra.php",
 	"css":"style.css",

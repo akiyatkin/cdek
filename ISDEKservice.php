@@ -2,11 +2,17 @@
 namespace akiyatkin\cdek;
 use akiyatkin\boo\Cache;
 use infrajs\ans\Ans;
+
+ISDEKservice::$account = CDEK::$conf['account'];
+ISDEKservice::$key = CDEK::$conf['key'];
+
 class ISDEKservice
 {
 	// auth
-	protected static $account = false; //укажите логин
-	protected static $key     = false; //укажите ключ
+	
+	public static $account = ''; //укажите логин
+
+	public static $key     = ''; //укажите ключ
 	
 
 	protected static $tarifPriority = false;
@@ -52,12 +58,12 @@ class ISDEKservice
 			}
 		}
 
-		if ($data['shipment']['cityToId']) {
+		if (!empty($data['shipment']['cityToId'])) {
 			$answer = self::calculate($data['shipment']);
 
 			if ($answer) {
 				$answer['type'] = $data['shipment']['type'];
-				if ($data['shipment']['timestamp']) {
+				if (!empty($data['shipment']['timestamp'])) {
 					$answer['timestamp'] = $data['shipment']['timestamp'];
 				}
 				self::toAnswer($answer);
@@ -71,7 +77,7 @@ class ISDEKservice
 
 	public static function getCity($data)
 	{
-		if ($data['city']) {
+		if (isset($data['city'])) {
 			$result = self::sendToCity($data['city']);
 			if ($result && $result['code'] == 200) {
 				$result = json_decode($result['result']);
@@ -121,7 +127,7 @@ class ISDEKservice
 
 			foreach ($xml as $key => $val) {
 
-				if ($_REQUEST['country'] && $_REQUEST['country'] != 'all' && ((string)$val['CountryName'] != $_REQUEST['country'])) {
+				if (isset($_REQUEST['country']) && $_REQUEST['country'] != 'all' && ((string)$val['CountryName'] != $_REQUEST['country'])) {
 					continue;
 				}
 
