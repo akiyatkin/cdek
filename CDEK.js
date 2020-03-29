@@ -21,7 +21,6 @@ export let CDEK = {
 		}
 		let Load = (await import('/vendor/akiyatkin/load/Load.js')).default
 		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(async res => await res.json())
-		console.log(get)
 		/*
 			price: "780"
 			deliveryPeriodMin: 2
@@ -111,7 +110,7 @@ export let CDEK = {
 				weight: 0.4 
 			})
 		}
-		console.log(goods)
+		//console.log(goods)
 		return goods
 	}
 }
