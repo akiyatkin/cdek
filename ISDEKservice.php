@@ -200,7 +200,12 @@ class ISDEKservice
 	}
 
 	// Calculation
-	protected static function calculate($shipment)
+	protected static function calculate($shipment) {
+		return Cache::func(function ($shipment) {
+			return ISDEKservice::_calculate($shipment);
+		},[$shipment]);
+	}
+	protected static function _calculate($shipment)
 	{
 		$headers = self::getHeaders();
 

@@ -9,6 +9,7 @@ Event::handler('Order.calc', function (&$gorder) {
 	$conf = CDEK::$conf;
 	if (empty($order['cdek'])) $order['cdek'] = [];
 	//gorder[cdek][wat] не трогаем
+	
 	$gorder['cdek']['cityFromId'] = $conf['cityFromId'];
 	$gorder['cdek']['cityFrom'] = $conf['cityFrom'];
 	$gorder['cdek']['cityToId'] = Seq::get($gorder, 'cdek.wat.city', $conf['defaultCityId']);

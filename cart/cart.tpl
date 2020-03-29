@@ -41,5 +41,7 @@
 	Доставка: <b>{~cost(cdek.calc.result.price)}&nbsp;руб.</b><br>
 {info:}
 	<div class="alert alert-secondary">
-		{:amount}
+		
+		{:basketresume}
+		<p>{:amount}</p>
 	</div>

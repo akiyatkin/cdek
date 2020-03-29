@@ -94,23 +94,37 @@ export let CDEK = {
 			})
 		}
 	},
+	getDim: item => {
+		//$item['Габариты']//WxHxL
+
+		let dim = item['Упаковка, см'] ? item['Упаковка, см']: '';
+		let weight = item['Вес, кг'] ? item['Вес, кг']: '0.4';
+
+		let d = dim.split(/[хx]/i)
+		
+		if (!d[0]) d[0] = 6;
+		if (!d[1]) d[1] = 15;
+		if (!d[2]) d[2] = 12;
+		weight = Number(weight);
+
+		return { 
+			"width": d[0], 
+			"height": d[1], 
+			"length": d[2], 
+			"weight": weight
+		}
+	},
 	getGoods: async () => {
 		let gorder = window.Cart.getGoodOrder()
-		let count = 0
+		let goods = []
 		for (let i in gorder.basket) {
 			let item = gorder.basket[i]
-			count += item.count
+			let dim = CDEK.getDim(item)
+			for (let i = 0; i < item['count']; i++) {
+				goods.push(dim)
+			}
 		}
-		let goods = []
-		for (let i = 0; i < count; i++) {
-			goods.push({ 
-				length: 12, 
-				width: 6, 
-				height: 15, 
-				weight: 0.4 
-			})
-		}
-		//console.log(goods)
+		console.log(goods)
 		return goods
 	}
 }
