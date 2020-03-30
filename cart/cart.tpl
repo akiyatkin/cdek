@@ -39,9 +39,3 @@
 	Стоимость{sum!total?:nodiscount}: <b>{~cost(sum)}&nbsp;руб.</b><br>
 	{sum!total?:prcoupon}
 	Доставка: <b>{~cost(cdek.calc.result.price)}&nbsp;руб.</b><br>
-{info:}
-	<div class="alert alert-secondary">
-		
-		{:basketresume}
-		<p>{:amount}</p>
-	</div>
