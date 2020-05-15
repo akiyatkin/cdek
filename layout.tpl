@@ -19,7 +19,7 @@
 		</div>
 		<div class="showres"></div>
 	</div>
-	<script async type="module">
+	<script type="module">
 		(async () => {
 			let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
 			let CDEK = (await import('/vendor/akiyatkin/cdek/CDEK.js')).default
