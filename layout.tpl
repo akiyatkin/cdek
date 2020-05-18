@@ -20,11 +20,9 @@
 		<div class="showres"></div>
 	</div>
 	<script type="module">
-		(async () => {
-			let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
-			let CDEK = (await import('/vendor/akiyatkin/cdek/CDEK.js')).default
-			await CDN.load('jquery')
-
+		import { CDN } from '/vendor/akiyatkin/load/CDN.js'
+		import { CDEK } from '/vendor/akiyatkin/cdek/CDEK.js'
+		CDN.on('load','jquery').then(() => {
 			let div = document.getElementById('{div}')
 			let cls = cls => div.getElementsByClassName(cls)[0]
 			let btn = cls('showTransport')
@@ -33,7 +31,7 @@
 			btn.addEventListener('click', () => CDEK.open())
 
 			let show = async (showres, wat) => {
-				await CDN.load('magnific-popup')
+				await CDN.on('load','magnific-popup')
 				showres.innerHTML = window.Template.parse('-cdek/layout.tpl', wat, 'showres')
 				$(div).find('a.gallery').magnificPopup({
 					type: 'image',
@@ -52,7 +50,7 @@
 			
 			show(showres, Session.get('cdek'))
 			
-		})()
+		})
 	</script>
 	{showres:}
 		{price?:showrespr}

@@ -1,12 +1,9 @@
-import Fire from '../load/Fire.js'
+import { Fire } from '../load/Fire.js'
+import { CDN } from '/vendor/akiyatkin/load/CDN.js'
+import { Load } from '/vendor/infrajs/load/Load.js'
 
 export let CDEK = {
-	on: (name, arg) => Fire.on(CDEK, name, arg),
-	hand: (name, func) => Fire.hand(CDEK, name, func),
-	set: (name, arg, val) => Fire.set(CDEK, name, arg, val),
-
-	
-
+	...Fire,
 	calc: async (type = "courier") => {
 		//type: courier, pickup
 		let get = {
@@ -19,7 +16,6 @@ export let CDEK = {
 				"goods":await CDEK.getGoods()
 			}
 		}
-		let Load = (await import('/vendor/akiyatkin/load/Load.js')).default
 		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(async res => await res.json())
 		/*
 			price: "780"
@@ -56,8 +52,7 @@ export let CDEK = {
 	},
 	getCartWidjet: async () => {
 		if (!window.cartWidjet) {
-			let CDN = (await import('/vendor/akiyatkin/load/CDN.js')).default
-			await CDN.load('cdek.widget')
+			await CDN.on('load','cdek.widget')
 			let option = {
 				//defaultCity: 'Тольятти', //какой город отображается по умолчанию
 				cityFrom: Config.get('cdek').cityFrom, // из какого города будет идти доставка
@@ -72,7 +67,7 @@ export let CDEK = {
 				apikey: Config.get('cdek').apikey,
 				choose:true,
 				onReady: async () => {
-					await CDN.load('jquery')
+					await CDN.on('load','jquery')
 					$('.CDEK-widget__popup__close-btn').attr('data-crumb','false').attr('onclick','return false');
 				},
 				onChooseProfile: CDEK.change,

@@ -6,7 +6,7 @@ let cls = cls => document.getElementsByClassName(cls)
 let ws = new WeakSet()
 Event.handler('Controller.onshow', async () => {
 	let btns = cls('-cdek-city')
-	await CDN.load('jquery')
+	await CDN.on('load','jquery')
 	let city = Session.get('orders.my.cdek.wat.cityName', Config.get('cdek').defaultCity)
 	for (let btn of btns) {
 		if (ws.has(btn)) continue 
