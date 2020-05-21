@@ -1,6 +1,7 @@
 import { Fire } from '../load/Fire.js'
 import { CDN } from '/vendor/akiyatkin/load/CDN.js'
 import { Load } from '/vendor/infrajs/load/Load.js'
+import { Cart } from '/vendor/infrajs/cart/Cart.js'
 
 export let CDEK = {
 	...Fire,
@@ -110,7 +111,7 @@ export let CDEK = {
 		}
 	},
 	getGoods: async () => {
-		let gorder = window.Cart.getGoodOrder()
+		let gorder = await Cart.getGoodOrder()
 		let goods = []
 		for (let i in gorder.basket) {
 			let item = gorder.basket[i]
