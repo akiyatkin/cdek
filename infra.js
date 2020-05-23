@@ -17,7 +17,7 @@ DOM.done('load', async () => {
 		btn.addEventListener('click', e => CDEK.open())
 	}
 })
-CDEK.hand('change', wat => {
+CDEK.hand('change', async wat => {
 	console.log(wat)
 	if (!wat.cityName) return
 	Session.set('orders.my.cdek.wat', wat)
@@ -26,6 +26,6 @@ CDEK.hand('change', wat => {
 		if (!btn.classList.contains('fix')) btn.innerHTML = wat.cityName
 		btn.innerHTML = wat.cityName
 	}
-	Session.syncNow()
+	await Session.async()
 	Global.check('cart')
 })
