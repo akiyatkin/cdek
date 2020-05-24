@@ -1,10 +1,21 @@
 {::}vendor/infrajs/cart/cart.tpl
 {transcardsimple:}
-	{order.cdek:cdekinfo}
+	<!-- <div class="form-check">
+		<input class="form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
+		<label class="form-check-label" for="checksamo">
+			Самовывоз в Москве: Варшавское шоссе, д.26, с.4, этаж 3, офис 9. <a href="/contacts">Схема проезда</a>
+		</label>
+	</div>
+		
+	<div class="form-check">
+		<input class="form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
+		<label class="form-check-label" for="checkcdek"> -->
+		{order.cdek:cdekinfo}
+	<!-- </div> -->
 {citychoice:}
 	Город: <b>{cityTo}</b>
 {cityfix:}
-	<p>Город: <b>{cityTo}</b></p>
+	<p>Доставка в: <b>{cityTo}</b></p>
 {cdekinfo:}
 	{data.order.id?:cityfix?:citychoice}
 	{pickup?wat.PVZ:pvz}
@@ -30,12 +41,15 @@
 			<tr><td>Время&nbsp;работы</td><td>{WorkTime}</td></tr>
 			<tr><td>Комментарий</td><td>{Note}</td></tr>
 		</table>
-		<div>Стоимость доставки самовывозом: <b>{~cost(...calc.result.price)}{:model.unit}</b></div>
+		<div>Стоимость доставки до пункта самовывоза: <b>{~cost(...calc.result.price)}{:model.unit}</b></div>
 {iprinttr:}
 	<b>Доставка</b>: {..cdek.cityTo}, {..cdek.pickup?:strpickup?:strcourier}, {..cdek.wat.PVZ?..cdek.wat.id?address} (<b>{..cdek.calc.result.price}{:model.unit}</b>)
 	{strcourier:}Курьер
 	{strpickup:}Самовывоз
 {amount:}
-	Стоимость{sum!total?:nodiscount}: <b>{~cost(sum)}&nbsp;руб.</b><br>
-	{sum!total?:prcoupon}
-	Доставка: <b>{~cost(cdek.calc.result.price)}&nbsp;руб.</b><br>
+	<p>
+		Стоимость{sum!total?:nodiscount}: {~cost(sum)}&nbsp;руб.<br>
+		{sum!total?:prcoupon}
+		Доставка ({cdek.cityTo}): {~cost(cdek.calc.result.price)}&nbsp;руб.<br>
+		Всего: <b>{~cost(alltotal)}&nbsp;руб.</b><br>
+	</p>
