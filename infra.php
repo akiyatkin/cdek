@@ -7,6 +7,9 @@ use infrajs\sequence\Seq;
 
 Event::handler('Order.calc', function (&$gorder) {
 	$conf = CDEK::$conf;
+	
+	
+	
 	if (empty($order['cdek'])) $order['cdek'] = [];
 	//gorder[cdek][wat] не трогаем
 	
@@ -17,10 +20,18 @@ Event::handler('Order.calc', function (&$gorder) {
 	$gorder['cdek']['type'] = Seq::get($gorder, 'cdek.wat.PVZ')? "pickup": "courier";
 	$gorder['cdek']['calc'] = CDEK::calc($gorder);
 	$gorder['cdek'][$gorder['cdek']['type']] = true;
-	if(isset($gorder['cdek']['calc']['result']['price'])) {
-		$gorder['alltotal'] = $gorder['total'] + $gorder['cdek']['calc']['result']['price'];
-	} else {
+
+
+	if (isset($gorder['transport']['choice']) && $gorder['transport']['choice'] == 'samo') {
 		$gorder['alltotal'] = $gorder['total'];
+	} else {
+		if(isset($gorder['cdek']['calc']['result']['price'])) {
+			$gorder['alltotal'] = $gorder['total'] + $gorder['cdek']['calc']['result']['price'];
+		} else {
+			$gorder['alltotal'] = $gorder['total'];
+		}	
 	}
+
+	
 });
 

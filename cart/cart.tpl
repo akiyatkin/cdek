@@ -1,17 +1,29 @@
 {::}vendor/infrajs/cart/cart.tpl
 {transcardsimple:}
-	<!-- <div class="form-check">
-		<input class="form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
+	<div class="form-check">
+		<input {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
 		<label class="form-check-label" for="checksamo">
 			Самовывоз в Москве: Варшавское шоссе, д.26, с.4, этаж 3, офис 9. <a href="/contacts">Схема проезда</a>
 		</label>
 	</div>
 		
 	<div class="form-check">
-		<input class="form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
-		<label class="form-check-label" for="checkcdek"> -->
+		<input checked {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
+		<label class="form-check-label" for="checkcdek">
 		{order.cdek:cdekinfo}
-	<!-- </div> -->
+	</div>
+	<script type="module">
+		import { Global } from '/vendor/infrajs/layer-global/Global.js'
+		let div = document.getElementById('{div}')
+		let cls = cls => div.getElementsByClassName(cls)
+		for (let inp of cls('transcardsimple')) {
+			inp.addEventListener('change', async () => {
+				Global.check('cart')
+				//DOM.emit('change')
+				//Crumb.go('/catalog/' + inp.dataset.nick + select.value + '=1')
+			})
+		}
+	</script>
 {citychoice:}
 	Город: <b>{cityTo}</b>
 {cityfix:}
@@ -50,6 +62,12 @@
 	<p>
 		Стоимость{sum!total?:nodiscount}: {~cost(sum)}&nbsp;руб.<br>
 		{sum!total?:prcoupon}
+		{transport.choice=:samo?:transsamo?:transcdek}
+		
+	</p>
+	{transsamo:}
+		<!-- Всего: <b>{~cost(alltotal)}&nbsp;руб.</b><br> -->
+	{transcdek:}
 		Доставка ({cdek.cityTo}): {~cost(cdek.calc.result.price)}&nbsp;руб.<br>
 		Всего: <b>{~cost(alltotal)}&nbsp;руб.</b><br>
-	</p>
+	{samo:}samo
