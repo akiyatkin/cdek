@@ -1,9 +1,10 @@
 {
-	"pub":["apikey","cityFrom","defaultCity","cityFromId","defaultCityId"],
+	"pub":["apikey","cityFrom","defaultCity","cityFromId","defaultCityId","adresasamovivoza"],
 	"conf":"akiyatkin\\cdek\\CDEK",
 	"apikey":"Ключ Яндекс от Геокодер",
 	"cityFrom":"Москва",
 	"cityFromId":44,
+	"adresasamovivoza":"Самовывоз в Москве",
 	"defaultCity":"Москва",
 	"defaultCityId":44,
 	"account":"",

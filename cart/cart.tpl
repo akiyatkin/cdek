@@ -1,14 +1,15 @@
 {::}vendor/infrajs/cart/cart.tpl
 {transcardsimple:}
 	<div class="form-check">
-		<input {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
+		<input {data.order.transport.choice=:strsamo?:checked} {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
 		<label class="form-check-label" for="checksamo">
-			Самовывоз в Москве: Варшавское шоссе, д.26, с.4, этаж 3, офис 9. <a href="/contacts">Схема проезда</a>
+			{~conf.cdek.adresasamovivoza}
+			<div><a href="/contacts">Схема проезда</a></div>
 		</label>
 	</div>
 		
 	<div class="form-check">
-		<input checked {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
+		<input {data.order.transport.choice!:strsamo?:checked} {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
 		<label class="form-check-label" for="checkcdek">
 		{order.cdek:cdekinfo}
 	</div>
@@ -25,16 +26,16 @@
 		}
 	</script>
 {citychoice:}
-	Город: <b>{cityTo}</b>
+	Доставка транспортной компанией СДЭК: <b>{cityTo}</b>
 {cityfix:}
-	<p>Доставка в: <b>{cityTo}</b></p>
+	<p>Доставка транспортной компанией СДЭК: <b>{cityTo}</b></p>
 {cdekinfo:}
 	{data.order.id?:cityfix?:citychoice}
 	{pickup?wat.PVZ:pvz}
 	{courier?:cur}
 	{data.order.id??:cdekchange}
 	{courier?:printaddr}
-	{cdekchange:}<p><b class="-cdek-city a fix">Изменить</b></p>
+	{cdekchange:}<div><span class="-cdek-city a fix">Изменить</span></div>
 	{printaddr:}
 		<div class="row">
 			<div class="col-12">
@@ -55,9 +56,14 @@
 		</table>
 		<div>Стоимость доставки до пункта самовывоза: <b>{~cost(...calc.result.price)}{:model.unit}</b></div>
 {iprinttr:}
+	{choice=:strsamo?:samovivoz?:cdekvivoz}
+	{samovivoz:} 
+	<b>Доставка</b>: {~conf.cdek.adresasamovivoza}
+	{cdekvivoz:}
 	<b>Доставка</b>: {..cdek.cityTo}, {..cdek.pickup?:strpickup?:strcourier}, {..cdek.wat.PVZ?..cdek.wat.id?address} (<b>{..cdek.calc.result.price}{:model.unit}</b>)
 	{strcourier:}Курьер
 	{strpickup:}Самовывоз
+	{strsamo:}samo
 {amount:}
 	<p>
 		Стоимость{sum!total?:nodiscount}: {~cost(sum)}&nbsp;руб.<br>
