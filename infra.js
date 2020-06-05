@@ -2,6 +2,7 @@ import { CDN } from '/vendor/akiyatkin/load/CDN.js'
 import { CDEK } from '/vendor/akiyatkin/cdek/CDEK.js'
 import { Event } from '/vendor/infrajs/event/Event.js'
 import { DOM } from '/vendor/akiyatkin/load/DOM.js'
+import { Session } from '/vendor/infrajs/session/Session.js'
 
 let cls = cls => document.getElementsByClassName(cls)
 let ws = new WeakSet()
