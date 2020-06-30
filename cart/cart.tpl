@@ -2,15 +2,15 @@
 {transcardsimple:}
 	<div class="form-check">
 		<input {data.order.transport.choice=:strsamo?:checked} {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checksamo" value="samo">
-		<label class="form-check-label" for="checksamo">
+		<label class="ml-1 form-check-label" for="checksamo">
 			{~conf.cdek.adresasamovivoza}
 			<div><a href="/contacts">Схема проезда</a></div>
 		</label>
 	</div>
 		
-	<div class="form-check">
+	<div class="mt-2 form-check">
 		<input {data.order.transport.choice!:strsamo?:checked} {:isdisabled} class="transcardsimple form-check-input" type="radio" name="transport.choice" id="checkcdek" value="cdek">
-		<label class="form-check-label" for="checkcdek">
+		<label class="ml-1 form-check-label" for="checkcdek">
 		{order.cdek:cdekinfo}
 	</div>
 	<script type="module">
@@ -39,7 +39,7 @@
 	{printaddr:}
 		<div class="row">
 			<div class="col-12">
-				<div class="form-group">
+				<div class="mt-2 form-group">
 					<label>Адрес для доставки</label>
 					<input {:isdisabled} type="text" name="transport.address" value="{data.order.transport.address}" class="form-control" placeholder="">
 				</div>
