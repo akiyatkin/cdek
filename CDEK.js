@@ -5,42 +5,43 @@ import { Cart } from '/vendor/infrajs/cart/Cart.js'
 
 export let CDEK = {
 	...Fire,
-	calc: async (type = "courier") => {
-		//type: courier, pickup
-		let get = {
-			isdek_action: "calc",
-			timestamp:Date.now(),
-			shipment: {
-				cityFromId: Config.get('cdek').cityFromId, //Москва
-				cityToId: Session.get('orders.my.cdek.wat.city', Config.get('cdek').defaultCityId),
-				"type":type,
-				"goods":await CDEK.getGoods()
-			}
-		}
-		let json = await fetch('/-cdek/service.php?' + Load.param(get)).then(async res => await res.json())
-		/*
-			price: "780"
-			deliveryPeriodMin: 2
-			deliveryPeriodMax: 3
-		*/
+	// calc: async (order, type = "courier") => {
+	// 	//type: courier, pickup
+	// 	let get = {
+	// 		isdek_action: "calc",
+	// 		timestamp:Date.now(),
+	// 		shipment: {
+	// 			cityFromId: Config.get('cdek').cityFromId, //Москва
+	// 			cityToId: Session.get('orders.my.cdek.wat.city', Config.get('cdek').defaultCityId),
+	// 			"type":type,
+	// 			"goods":await CDEK.getGoods(order)
+	// 		}
+	// 	}
+	// 	let json = await fetch('/-cart/cdek/service.php?' + Load.param(get)).then(async res => await res.json())
+	// 	/*
+	// 		price: "780"
+	// 		deliveryPeriodMin: 2
+	// 		deliveryPeriodMax: 3
+	// 	*/
 
-		return json
-	},
-	change: async (wat) => {
+	// 	return json
+	// },
+	change: async (wat, order) => {
 		if (!wat) return
+		wat.order = order
 		if (wat.PVZ) {
 			delete wat.PVZ.Picture
 			delete wat.PVZ.placeMark
 			delete wat.PVZ.list_block
 		}
-		CDEK.on('change', wat)
+		CDEK.puff('change', wat)
 	},
-	open: async () => {
+	open: async (order) => {
 		import('/vendor/akiyatkin/hatloader/HatLoader.js').then( (obj) => {
 			let HatLoader = obj.default;
 			HatLoader.show('Загружается карта...')
 		})
-		let cartWidjet = await CDEK.getCartWidjet()
+		let cartWidjet = await CDEK.getCartWidjet(order)
 		cartWidjet.open()
 		import('/vendor/akiyatkin/hatloader/HatLoader.js').then( (obj) => {
 			let HatLoader = obj.default;
@@ -51,30 +52,31 @@ export let CDEK = {
 		let cartWidjet = await CDEK.getCartWidjet()
 		cartWidjet.close()
 	},
-	getCartWidjet: async () => {
+	getCartWidjet: async (order) => {
 		if (!window.cartWidjet) {
-			await CDN.on('load','cdek.widget')
+			await CDN.fire('load','cdek.widget')
 			let option = {
 				//defaultCity: 'Тольятти', //какой город отображается по умолчанию
-				cityFrom: Config.get('cdek').cityFrom, // из какого города будет идти доставка
+				cityFromId: Config.get('cart').city_from_id, // из какого города будет идти доставка
 				//country: 'Россия',
 				hidedress: true,
 				hidecash: true,
 				hidedelt: false,
-				servicepath: '/-cdek/service.php',
+				servicepath: '/-cart/cdek/service.php',
 				popup: true,
-				path: 'https://widget.cdek.ru/widget/scripts/',
+				//path: 'https://widget.cdek.ru/widget/scripts/',
 				//path2: '/-catalog/cdek/widget/scripts/',
-				apikey: Config.get('cdek').apikey,
+				path: '/vendor/akiyatkin/cdek/lib/widget/scripts/',
+				apikey: Config.get('cart').yandexapikey,
 				choose:true,
 				onReady: async () => {
-					await CDN.on('load','jquery')
+					await CDN.fire('load','jquery')
 					$('.CDEK-widget__popup__close-btn').attr('data-crumb','false').attr('onclick','return false');
 				},
-				onChooseProfile: CDEK.change,
-				onCalculate: CDEK.change,
-				onChoose: CDEK.change,
-				goods: await CDEK.getGoods()
+				onChooseProfile: wat => CDEK.change(wat, order),
+				onCalculate: wat => CDEK.change(wat, order),
+				onChoose: wat => CDEK.change(wat, order),
+				goods: await CDEK.getGoods(order)
 			}
 			window.cartWidjet = new ISDEKWidjet(option);
 		}
@@ -110,17 +112,15 @@ export let CDEK = {
 			"weight": weight
 		}
 	},
-	getGoods: async () => {
-		let gorder = await Cart.getGoodOrder()
+	getGoods: async (order) => {
 		let goods = []
-		for (let i in gorder.basket) {
-			let item = gorder.basket[i]
-			let dim = CDEK.getDim(item)
-			for (let i = 0; i < item['count']; i++) {
+		for (let i in order.basket) {
+			let pos = order.basket[i]
+			let dim = CDEK.getDim(pos.model)
+			for (let i = 0; i < pos['count']; i++) {
 				goods.push(dim)
 			}
 		}
-		console.log(goods)
 		return goods
 	}
 }
