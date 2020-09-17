@@ -41,8 +41,12 @@ export let CDEK = {
 			let HatLoader = obj.default;
 			HatLoader.show('Загружается карта...')
 		})
-		let cartWidjet = await CDEK.getCartWidjet(order)
+		const cartWidjet = await CDEK.getCartWidjet(order)
+		
+		
 		cartWidjet.open()
+		const checkCity = cartWidjet.city.check(order.city.city)
+        if (checkCity) cartWidjet.city.set(order.city.city)
 		import('/vendor/akiyatkin/hatloader/HatLoader.js').then( (obj) => {
 			let HatLoader = obj.default;
 			HatLoader.hide()
@@ -57,11 +61,14 @@ export let CDEK = {
 			await CDN.fire('load','cdek.widget')
 			let option = {
 				//defaultCity: 'Тольятти', //какой город отображается по умолчанию
-				cityFromId: Config.get('cart').city_from_id, // из какого города будет идти доставка
+				defaultCity: order.city.city,
+				country: order.city.country,
+				//city: order.city_id,
+				cityFrom: Config.get('cart').city_from, // из какого города будет идти доставка
 				//country: 'Россия',
 				hidedress: true,
 				hidecash: true,
-				hidedelt: false,
+				hidedelt: true,
 				servicepath: '/-cart/cdek/service.php',
 				popup: true,
 				//path: 'https://widget.cdek.ru/widget/scripts/',
